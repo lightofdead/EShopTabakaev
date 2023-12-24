@@ -23,6 +23,9 @@ namespace DTO.AutoMapper
             cfg.CreateMap<ProductDTO, Product>();
             cfg.CreateMap<Product, ProductDTO>();
 
+            cfg.CreateMap<ProductForBuyDTO, ProductForBuy>();
+            cfg.CreateMap<ProductForBuy, ProductForBuyDTO>();
+
             // Carts
             cfg.CreateMap<CartDTO, Cart>();
             cfg.CreateMap<Cart, CartDTO>();

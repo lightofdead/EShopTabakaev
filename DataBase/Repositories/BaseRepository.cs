@@ -79,7 +79,7 @@ namespace DataBase.Repositories
             }
         }
 
-        public virtual async void Update(T model, string values)
+        public virtual async Task Update(T model, string values)
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {

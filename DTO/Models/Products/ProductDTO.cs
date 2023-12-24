@@ -13,5 +13,7 @@
         public string Url { get; set; }
 
         public Guid CategoryId { get; set; }
+
+        public string Number { get; set; }
     }
 }

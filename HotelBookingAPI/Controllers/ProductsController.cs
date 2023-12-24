@@ -6,6 +6,7 @@ using Interfaces.Repositories;
 using DataBase.Repositories;
 using DTO.AutoMapper;
 using DTO.Models.Products;
+using System.Linq.Expressions;
 
 namespace tabakaevAPI.Controllers
 {
@@ -14,6 +15,7 @@ namespace tabakaevAPI.Controllers
     public class ProductsController : ControllerBase
     {
         private ProductsRepository _repo = new ProductsRepository();
+        private ProductsForBuyRepository _repoBuy = new ProductsForBuyRepository();
         public ProductsController()
         {
         }
@@ -24,7 +26,7 @@ namespace tabakaevAPI.Controllers
         {
             try 
             {
-                 _repo.Update(AutoMapperDTO.Mapper.Map<Product>(model));
+                 await _repo.Update(AutoMapperDTO.Mapper.Map<Product>(model));
             }
             catch(Exception ex)
             {
@@ -67,6 +69,14 @@ namespace tabakaevAPI.Controllers
         public async Task<JsonResult> Delete(Guid id)
         {
             var result = await _repo.Delete(id);
+            var poductsForBuy = (await _repoBuy.GetModels()).Where(e => e.Product == id).ToList();
+            if (poductsForBuy.Count > 0)
+            {
+                foreach(var elem in poductsForBuy)
+                {
+                    await _repoBuy.Delete(elem.Product);
+                }
+            }
 
             return new JsonResult(result);
         }
@@ -75,9 +85,23 @@ namespace tabakaevAPI.Controllers
         [HttpGet()]
         public async Task<JsonResult> GetAll()
         {
-            var result = (await _repo.GetModels()).Select(e => AutoMapperDTO.Mapper.Map<ProductDTO>(e));
+            var productsForBuy = (await _repoBuy.GetModels()).Select(e => AutoMapperDTO.Mapper.Map<ProductForBuyDTO>(e)).ToList();
+            var products = (await _repo.GetModels()).Select(e => AutoMapperDTO.Mapper.Map<ProductDTO>(e)).ToList();
+
+            var result = products.GroupJoin(
+                productsForBuy,
+                e => e.Id,
+                e => e.Product,
+                (inner, outer) => outer.Any() 
+                    ? default
+                    : inner
+                )
+                .Where(e => e != default)
+                .ToList();
+                ;
 
             return new JsonResult(Ok(result));
         }
+
     }
 }

@@ -35,10 +35,11 @@ namespace DataBase.Repositories
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var sql = @"SELECT p.ID, p.Name, p.Url, p.Description, p.Count, p.Price, p.CategoryID, c.Name
+                var sql = @"SELECT p.ID, p.Name, p.Url, p.Description, p.Count, p.Price, p.CategoryID, c.Name, c.Number
                 FROM Products p 
-                INNER JOIN Categories c ON p.CategoryID = c.ID "+
-                $"WHERE c.Name = '{categoryName}'";
+                INNER JOIN Categories c ON p.CategoryID = c.ID 
+                LEFT JOIN ProductsForBuy PFB ON p.Id = PFB.Product "+
+                $"WHERE c.Name = '{categoryName}' and PFB.Product is NULL";
 
                 var products = await connection.QueryAsync<Product, Category, Product>(sql, (product, category) => {
                     product.Category = category;
