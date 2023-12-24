@@ -23,7 +23,7 @@ namespace tabakaevAPI.Controllers
         [HttpPost]
         public async Task<JsonResult> Delete(Guid id)
         {
-            var result = await _repoBuy.Delete(id);
+            var result = await _repoBuy.DeleteByProductId(id);
 
             return new JsonResult(result);
         }

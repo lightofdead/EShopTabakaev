@@ -74,7 +74,7 @@ namespace tabakaevAPI.Controllers
             {
                 foreach(var elem in poductsForBuy)
                 {
-                    await _repoBuy.Delete(elem.Product);
+                    await _repoBuy.DeleteByProductId(elem.Product);
                 }
             }
 

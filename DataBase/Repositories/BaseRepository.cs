@@ -48,7 +48,7 @@ namespace DataBase.Repositories
                 await db.QueryAsync<T>(sqlQuery, new { modelId });
                 //db.Execute(sqlQuery, new { modelId });
             }
-            var result = Get(modelId) == default;
+            var result = await Get(modelId) == default;
             return result;
         }
 

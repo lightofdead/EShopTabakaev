@@ -25,5 +25,17 @@ namespace DataBase.Repositories
         {
             return await base.Create(model, $"'{model.Product}'");
         }
+
+        public  async Task<bool> DeleteByProductId(Guid modelId)
+        {
+            using (IDbConnection db = new SqlConnection(connectionString))
+            {
+                var sqlQuery = $"DELETE FROM [ProductsForBuy] WHERE Product = '{modelId}'";
+                await db.QueryAsync<Guid>(sqlQuery, new { modelId });
+                //db.Execute(sqlQuery, new { modelId });
+            }
+            var result = await Get(modelId) == default;
+            return result;
+        }
     }
 }
