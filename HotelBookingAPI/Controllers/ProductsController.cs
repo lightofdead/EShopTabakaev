@@ -5,27 +5,26 @@ using DataBase.Models;
 using Interfaces.Repositories;
 using DataBase.Repositories;
 using DTO.AutoMapper;
-using DTO.Models.Categories;
 using DTO.Models.Products;
 
 namespace tabakaevAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class ProductsController : ControllerBase
     {
-        private CategoriesRepository _repo = new CategoriesRepository();
-        public CategoriesController()
+        private ProductsRepository _repo = new ProductsRepository();
+        public ProductsController()
         {
         }
 
         // Create/Edit
         [HttpPost]
-        public async Task<JsonResult> Edit(CategoryDTO model)
+        public async Task<JsonResult> Edit(ProductDTO model)
         {
             try 
             {
-                 _repo.Update(AutoMapperDTO.Mapper.Map<Category>(model));
+                 _repo.Update(AutoMapperDTO.Mapper.Map<Product>(model));
             }
             catch(Exception ex)
             {
@@ -35,9 +34,9 @@ namespace tabakaevAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> Create(CategoryDTO model)
+        public async Task<JsonResult> Create(ProductDTO model)
         {
-            var elem = AutoMapperDTO.Mapper.Map<Category>(model);
+            var elem = AutoMapperDTO.Mapper.Map<Product>(model);
             var result = Guid.Empty;
             if (elem.Id == Guid.Empty) 
             {
@@ -58,7 +57,7 @@ namespace tabakaevAPI.Controllers
         [HttpGet]
         public async Task<JsonResult> Get(Guid id)
         {
-            var result = AutoMapperDTO.Mapper.Map<CategoryDTO>(await _repo.Get(id));
+            var result = AutoMapperDTO.Mapper.Map<ProductDTO>(await _repo.Get(id));
 
             return new JsonResult(Ok(result));
         }
@@ -76,15 +75,7 @@ namespace tabakaevAPI.Controllers
         [HttpGet()]
         public async Task<JsonResult> GetAll()
         {
-            var result = (await _repo.GetModels()).Select(e => AutoMapperDTO.Mapper.Map<CategoryDTO>(e));
-
-            return new JsonResult(Ok(result));
-        }
-
-        [HttpGet()]
-        public async Task<JsonResult> GetProducts(string categoryName)
-        {
-            var result = (await _repo.GetProducts(categoryName)).Select(e => AutoMapperDTO.Mapper.Map<ProductDTO>(e));
+            var result = (await _repo.GetModels()).Select(e => AutoMapperDTO.Mapper.Map<ProductDTO>(e));
 
             return new JsonResult(Ok(result));
         }

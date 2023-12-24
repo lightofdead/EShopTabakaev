@@ -27,72 +27,75 @@ namespace DataBase.Repositories
             _tableName = tableName;
         }
 
-        public Guid Create(T model, string values)
+        public virtual async Task<Guid> Create(T model, string values)
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
                 var sqlQuery = $"INSERT INTO [{_tableName}] ({_fields}) VALUES({values})";
 
-                db.Execute(sqlQuery, model);
+                 //db.QueryAsync(sqlQuery, model);
+                await db.QueryAsync<T>(sqlQuery, model);
             }
             var result = model.Id;
             return result;
         }
 
-        public bool Delete(Guid modelId)
+        public virtual async Task<bool> Delete(Guid modelId)
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
                 var sqlQuery = $"DELETE FROM [{_tableName}] WHERE Id = '{modelId}'";
-                db.Execute(sqlQuery, new { modelId });
+                await db.QueryAsync<T>(sqlQuery, new { modelId });
+                //db.Execute(sqlQuery, new { modelId });
             }
             var result = Get(modelId) == default;
             return result;
         }
 
-        public T Get(Guid modelId)
+        public virtual async Task<T> Get(Guid modelId)
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
-                var result = db.Query<T>($"SELECT * FROM [{_tableName}] WHERE Id = '{modelId}'").FirstOrDefault();
-                return result;
+                var result = await db.QueryAsync<T>($"SELECT * FROM [{_tableName}] WHERE Id = '{modelId}'");
+                return result.FirstOrDefault();
             }
         }
 
-        public List<T> GetModelsByProperty(Guid modelId)
+        public virtual async Task<List<T>> GetModelsByProperty(Guid modelId)
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
-                var result = db.Query<T>($"SELECT * FROM [{_tableName}]  WHERE {_propertyForFind}").ToList();
-                return result;
+                var result = await db.QueryAsync<T>($"SELECT * FROM [{_tableName}]  WHERE {_propertyForFind}");
+                return result.ToList();
             }
         }
 
-        public List<T> GetModels()
+        public virtual async Task<List<T>> GetModels()
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
-                var result = db.Query<T>($"SELECT * FROM [{_tableName}]").ToList();
-                return result;
+                var result = await db.QueryAsync<T>($"SELECT * FROM [{_tableName}]");
+                return result.ToList();
             }
         }
 
-        public void Update(T model, string values)
+        public virtual async void Update(T model, string values)
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
                 var sqlQuery = $"UPDATE {_tableName} SET {values} WHERE Id = '{model.Id}'";
+                await db.QueryAsync<T>(sqlQuery, model);
 
-                db.Execute(sqlQuery, model);
+                //db.Execute(sqlQuery, model);
             }
         }
 
-        public T GetByName(string name)
+        public virtual async Task<T> GetByName(string name)
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
-                var result = db.Query<T>($"SELECT * FROM [{_tableName}]  WHERE Name = '{name}'").FirstOrDefault();
-                return result;
+                var result = await db.QueryAsync<T>($"SELECT * FROM [{_tableName}]  WHERE Name = '{name}'");
+                return result.FirstOrDefault();
             }
         }
     }

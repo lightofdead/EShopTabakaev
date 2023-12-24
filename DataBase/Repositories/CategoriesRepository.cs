@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DataBase.Models;
 using Microsoft.Data.SqlClient;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,14 +21,33 @@ namespace DataBase.Repositories
         { 
         
         }
-        public Guid Create(Category model)
+        public async Task<Guid> Create(Category model)
         {
-            return base.Create(model, $"'{model.Name}'");
+            return await base.Create(model, $"'{model.Name}'");
         }
 
-        public void Update(Category model)
+        public async void Update(Category model)
         {
-            base.Update(model, $"Name = {model.Name}");
+            base.Update(model, $"Name = '{model.Name}'");
+        }
+
+        public async Task<List<Product>> GetProducts(string categoryName)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var sql = @"SELECT p.ID, p.Name, p.Url, p.Description, p.Count, p.Price, p.CategoryID, c.Name
+                FROM Products p 
+                INNER JOIN Categories c ON p.CategoryID = c.ID "+
+                $"WHERE c.Name = '{categoryName}'";
+
+                var products = await connection.QueryAsync<Product, Category, Product>(sql, (product, category) => {
+                    product.Category = category;
+                    return product;
+                },
+                splitOn: "CategoryID");
+                var result = products.ToList();
+                return result;
+            }
         }
     }
 }
