@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBase", "DataBase\DataBa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{6141D141-E8B7-4A94-A3E0-2C0A21829A21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{95DE5B05-AE2B-4F66-9032-964BCB73832F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTO", "DTO\DTO.csproj", "{95DE5B05-AE2B-4F66-9032-964BCB73832F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{168859DF-1DAC-4165-B78B-0AE4F9B28F61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{95DE5B05-AE2B-4F66-9032-964BCB73832F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95DE5B05-AE2B-4F66-9032-964BCB73832F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95DE5B05-AE2B-4F66-9032-964BCB73832F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{168859DF-1DAC-4165-B78B-0AE4F9B28F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{168859DF-1DAC-4165-B78B-0AE4F9B28F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{168859DF-1DAC-4165-B78B-0AE4F9B28F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{168859DF-1DAC-4165-B78B-0AE4F9B28F61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
