@@ -64,7 +64,7 @@ namespace tabakaevAPI.Controllers
         }
 
         // Delete
-        [HttpDelete]
+        [HttpPost]
         public async Task<JsonResult> Delete(Guid id)
         {
             var result = await _repo.Delete(id);
@@ -81,12 +81,12 @@ namespace tabakaevAPI.Controllers
             return new JsonResult(Ok(result));
         }
 
-        [HttpGet()]
-        public async Task<JsonResult> GetProducts(string categoryName)
-        {
-            var result = (await _repo.GetProducts(categoryName)).Select(e => AutoMapperDTO.Mapper.Map<ProductDTO>(e));
+        //[HttpGet()]
+        //public async Task<JsonResult> GetProducts(string categoryName)
+        //{
+        //    var result = (await _repo.GetProducts(categoryName)).Select(e => AutoMapperDTO.Mapper.Map<ProductDTO>(e));
 
-            return new JsonResult(Ok(result));
-        }
+        //    return new JsonResult(Ok(result));
+        //}
     }
 }

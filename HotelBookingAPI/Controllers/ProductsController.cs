@@ -65,7 +65,7 @@ namespace tabakaevAPI.Controllers
         }
 
         // Delete
-        [HttpDelete]
+        [HttpPost]
         public async Task<JsonResult> Delete(Guid id)
         {
             var result = await _repo.Delete(id);
