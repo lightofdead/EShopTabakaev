@@ -25,4 +25,12 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors(x => x
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           //.AllowCredentials()
+           .AllowAnyOrigin()
+           //.WithOrigins("https://localhost:7106")); // Allow only this origin can also have multiple origins seperated with comma
+           .SetIsOriginAllowed(origin => true));// Allow any origin  
+
 app.Run();
